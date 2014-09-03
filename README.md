@@ -6,7 +6,7 @@ The goal of this library is to streamline the filling out of pdf forms via PHP.
 Requirements
 ------------
 
-You will need the [PDFToolkit](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/) `pdftk` for saving out pdfs, if you only want a xfdf file, this is not required.
+You will need the [PDFToolkit](https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/) `pdftk` for saving out, or reading from pdfs, if you only want generate a xfdf file from an array, this is not required.
 
 Usage
 -----
@@ -44,6 +44,16 @@ $field_data = array(
 );
 
 PHPPDFFill\PDFFill::make($template_path, $field_data)->save_xfdf($output_path);
+```
+
+To get the fields out of a pdf, for validation or use in a form, use the `get_pdf_field_names()` method (Requires pdftk):
+
+```php
+$template_path = dirname(__FILE__).'/template.pdf';
+$field_names = PHPPDFFill\PDFFill::template($template_path)->get_pdf_field_names();
+
+// Response:
+// Array( "name", "color" )
 ```
 
 TODO FOR 1.0

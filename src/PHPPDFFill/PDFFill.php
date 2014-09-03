@@ -35,14 +35,13 @@ class PDFFill {
 	{
 		$this->field_data = $field_data;
 		$this->pdf_template_path = $pdf_template_path;
-
 		return $this;
 	}
 	//*******************************************************************
 	//	CHAINABLES
 	//		These methods may be chained if desired
 	//*******************************************************************
-	public function template($pdf_template_path='')
+	protected function template($pdf_template_path='')
 	{
 		if(!empty($pdf_template_path))
 		{
@@ -52,7 +51,7 @@ class PDFFill {
 		return $this;
 	}
 
-	public function set($key='', $value='')
+	protected function set($key='', $value='')
 	{
 		if(!empty($key) && !empty($value))
 		{
@@ -66,9 +65,26 @@ class PDFFill {
 	//		These methods cannot be chained
 	//*******************************************************************
 
-	public function getFields()
+	protected function getFields()
 	{
 		return $this->field_data;
+	}
+
+	protected function get_pdf_field_names()
+	{
+		if(!empty($this->pdf_template_path) && file_exists($this->pdf_template_path))
+		{
+			$command = 'pdftk '.$this->pdf_template_path.' dump_data_fields';
+			exec( $command, $output, $ret );
+			$output = implode("\n",$output);
+			$regex = "/FieldName: ([A-Za-z0-9_]+)/";
+			preg_match_all($regex, $output, $field_names);
+			return $field_names[1];
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	//===================================================================
@@ -182,7 +198,7 @@ class PDFFill {
 	public function __call($method='', $parameters='')
 	{
 		if(method_exists($this, $method)){
-			call_user_func_array(array($this, $method), $parameters);
+			return call_user_func_array(array($this, $method), $parameters);
 		}
 	}
 

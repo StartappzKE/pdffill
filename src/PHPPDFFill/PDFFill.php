@@ -87,6 +87,81 @@ class PDFFill {
 		}
 	}
 
+	protected function get_pdf_field_data()
+	{
+		if(!empty($this->pdf_template_path) && file_exists($this->pdf_template_path))
+		{
+			$command = 'pdftk '.$this->pdf_template_path.' dump_data_fields';
+			exec( $command, $output, $ret );
+			$field_data = array();
+			$count = 0;
+			array_shift($output);
+			foreach($output as $o)
+			{
+				if($o == '---')
+				{
+					$count++;
+				}
+				else
+				{
+					if(preg_match("/FieldName: ([A-Za-z0-9_\s]+)/",$o, $matches))
+					{
+						$field_data[$count]["name"] = $matches[1];
+					}
+					else if(preg_match("/FieldType: ([A-Za-z0-9_]+)/",$o, $matches))
+					{
+						if($matches[1] == "Text")
+						{
+							$field_data[$count]["type"] = "text";
+						}
+						elseif($matches[1] == "Choice")
+						{
+							$field_data[$count]["type"] = "select";
+						}
+						elseif($matches[1] == "Button")
+						{
+							$field_data[$count]["type"] = "button";
+						}
+						elseif($matches[1] == "Signature")
+						{
+							$field_data[$count]["type"] = "signature";
+						}
+					}
+					else if(preg_match("/FieldStateOption: ([A-Za-z0-9_]+)/",$o, $matches))
+					{
+						$field_data[$count]["options"][] = $matches[1];
+					}
+				}
+			}
+			foreach($field_data as $k=>$d)
+			{
+				if(!isset($d['type']))
+				{
+					unset($field_data[$k]);
+				}
+				else if($d['type'] == "button" && isset($d['options']))
+				{
+					if($d['options'][0] == 'Off' && $d['options'][1] == 'Yes')
+					{
+						$field_data[$k]['type'] = "checkbox";
+						unset($field_data[$k]['options']);
+					}
+					else
+					{
+						$field_data[$k]['type'] = "radio";
+					}
+				}
+				
+			}
+			$field_data = array_values($field_data);
+			return $field_data;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	//===================================================================
 	//	SAVERS
 	//		Save output files as a xfdf or pdf

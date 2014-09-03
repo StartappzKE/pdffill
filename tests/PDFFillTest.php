@@ -5,12 +5,14 @@ use PHPPDFFill\PDFFill as PDFFill;
 class PDFFillTest extends PHPUnit_Framework_TestCase
 {
 	public $file;
+	public $complex_file;
 	public $fields;
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->file = dirname(__FILE__)."/assets/name_color.pdf";
+		$this->complex_file = dirname(__FILE__)."/assets/complex.pdf";
 		$this->fields = array(
 			'name'=> 'John Smith',
 			'color' => 'Blue'
@@ -132,5 +134,63 @@ class PDFFillTest extends PHPUnit_Framework_TestCase
 		$read_fields = $obj->get_pdf_field_names();
 
 		$this->assertEquals($read_fields,array_keys($this->fields));
+	}
+
+	public function testGetPDFFieldDataFailsGracefullyWithoutTemplate()
+	{
+		$obj = PDFFill::template("non_existant_file.pdf");
+		$read_fields = $obj->get_pdf_field_data();
+
+		$this->assertEquals($read_fields,false);
+	}
+
+	public function testGetPDFFieldDataReturnsCorrectArray()
+	{
+		$obj = PDFFill::template($this->complex_file);
+		$read_fields = $obj->get_pdf_field_data();
+		
+		$expected_result = array(
+			array(
+				"name"=>"names",
+				"type"=>"text",
+			),
+			array(
+				"name"=>"color",
+				"type"=>"text",
+			),
+			array(
+				"name"=>"check",
+				"type"=>"checkbox",
+			),
+			array(
+				"name"=>"group 5",
+				"type"=>"radio",
+				"options"=>array("Off","apples","bananas","bears")
+			),
+			array(
+				"name"=>"List Box6",
+				"type"=>"select",
+				"options"=>array("asdasdas","r","rase","sd")
+			),
+			array(
+				"name"=>"Dropdown7",
+				"type"=>"select",
+				"options"=>array("1","12","36"),
+			),
+			array(
+				"name"=>"Button8",
+				"type"=>"button",
+			),
+			array(
+				"name"=>"Signature9",
+				"type"=>"signature",
+			),
+			array(
+				"name"=>"Barcode10",
+				"type"=>"text",
+			)
+		);
+
+		$this->assertEquals($read_fields,$expected_result);
 	}
 }

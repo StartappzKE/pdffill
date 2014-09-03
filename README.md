@@ -1,7 +1,7 @@
 PDFFill
 =======
 
-The goal of this library is to streamline the filling ou of pdf forms via PHP.
+The goal of this library is to streamline the filling out of pdf forms via PHP.
 
 Requirements
 ------------
@@ -20,13 +20,14 @@ $field_data = array(
 	"color" => "Blue",
 );
 
-PDFFill::make($template_path, $field_data)->save_pdf($output_path);
+PHPPDFFill\PDFFill::make($template_path, $field_data)->save_pdf($output_path);
 ```
 
 Alternatively you can fill out the fields using this syntax
 
 ```php
-PDFFill::make()
+$template_path = dirname(__FILE__).'/template.pdf';
+PHPPDFFill\PDFFill::template($template_path)
 	->set("name","John Smith")
 	->set("color","Blue")
 	->save_pdf($output_path);
@@ -42,7 +43,7 @@ $field_data = array(
 	"color" => "Blue",
 );
 
-PDFFill::make($template_path, $field_data)->save_xfdf($output_path);
+PHPPDFFill\PDFFill::make($template_path, $field_data)->save_xfdf($output_path);
 ```
 
 TODO FOR 1.0

@@ -153,29 +153,35 @@ class PDFFillTest extends PHPUnit_Framework_TestCase
 			array(
 				"name"=>"names",
 				"type"=>"text",
+				"value"=>"asdasdasdasdasdasdasd",
 			),
 			array(
 				"name"=>"color",
 				"type"=>"text",
+				"value"=>"asdasdasd",
 			),
 			array(
 				"name"=>"check",
 				"type"=>"checkbox",
+				"value"=>"Yes",
 			),
 			array(
 				"name"=>"group 5",
 				"type"=>"radio",
-				"options"=>array("Off","apples","bananas","bears")
+				"options"=>array("Off","apples","bananas","bears"),
+				"value"=>"bananas",
 			),
 			array(
 				"name"=>"List Box6",
 				"type"=>"select",
-				"options"=>array("asdasdas","r","rase","sd")
+				"options"=>array("asdasdas","r","rase","sd"),
+				"value"=>"r",
 			),
 			array(
 				"name"=>"Dropdown7",
 				"type"=>"select",
 				"options"=>array("1","12","36"),
+				"value"=>"12",
 			),
 			array(
 				"name"=>"Button8",
@@ -188,6 +194,7 @@ class PDFFillTest extends PHPUnit_Framework_TestCase
 			array(
 				"name"=>"Barcode10",
 				"type"=>"text",
+				"value"=>"Dropdown7&#9;List Box6&#9;Signature9&#9;check&#9;color&#9;group 5&#9;names&#13;12&#9;r&#9;&#9;Yes&#9;asdasdasd&#9;bananas&#9;asdasdasdasdasdasdasd",
 			)
 		);
 

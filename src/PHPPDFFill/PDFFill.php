@@ -131,6 +131,10 @@ class PDFFill {
 					{
 						$field_data[$count]["options"][] = $matches[1];
 					}
+					else if(preg_match("/FieldValue: (.*)/",$o, $matches))
+					{
+						$field_data[$count]["value"] = $matches[1];
+					}
 				}
 			}
 			foreach($field_data as $k=>$d)

@@ -83,11 +83,6 @@ To get more data about the fields use the `get_pdf_field_data()` method:
 	// )
 ```
 
-TODO FOR 1.0
--------------
-
-* Output the raw pdf data for use as showing a file that's not on the server.
-
 Credits
 -------
 

@@ -77,7 +77,7 @@ class PDFFill {
 			$command = 'pdftk '.$this->pdf_template_path.' dump_data_fields';
 			exec( $command, $output, $ret );
 			$output = implode("\n",$output);
-			$regex = "/FieldName: ([A-Za-z0-9_]+)/";
+			$regex = "/FieldName: ([A-Za-z0-9_\.]+)/";
 			preg_match_all($regex, $output, $field_names);
 			return $field_names[1];
 		}
@@ -104,7 +104,7 @@ class PDFFill {
 				}
 				else
 				{
-					if(preg_match("/FieldName: ([A-Za-z0-9_\s]+)/",$o, $matches))
+					if(preg_match("/FieldName: ([A-Za-z0-9_\.\s]+)/",$o, $matches))
 					{
 						$field_data[$count]["name"] = $matches[1];
 					}
